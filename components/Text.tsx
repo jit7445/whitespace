@@ -12,7 +12,7 @@ const Text: React.FC<HomeProps> = () => {
   };
 
   const insertWhitespace = () => {
-    // Split the input text by newline characters
+    // Split the input text by newline characters to get individual paragraphs
     const paragraphs = sentence.split('\n');
 
     const modifiedParagraphs = paragraphs.map((paragraph) => {
@@ -22,15 +22,14 @@ const Text: React.FC<HomeProps> = () => {
       const wordspace = clauses.map((clause, index) => {
         if (clause !== '.' && clause !== ',') {
           let words = clause.split(' ').filter(word => word); // Split clause into words
-          console.log("words:",words);
 
           for (let i = 0; i < 3; i++) {
             let randomIndex = Math.floor(Math.random() * words.length);
             let word = words[randomIndex];
             if (word && word.length > 2) { // Add a check for word being truthy and having a length > 2
-              // Randomly place one whitespace in the word
+              // Randomly place one zero-width space in the word
               let randomPosition = Math.floor(Math.random() * (word.length - 1)) + 1;
-              words[randomIndex] = word.substring(0, randomPosition) + ' ' + word.substring(randomPosition);
+              words[randomIndex] = word.substring(0, randomPosition) + '\u200B' + word.substring(randomPosition);
             }
           }
 
