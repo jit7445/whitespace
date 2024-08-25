@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Textarea } from "@/components/ui/textarea";
+import cluster from 'cluster';
 
 interface HomeProps {}
 
@@ -12,16 +13,19 @@ const Text: React.FC<HomeProps> = () => {
   };
 
   const insertWhitespace = () => {
-    const words = sentence.split(' ');
-    const spacedSentence = words.map((word, index) => {
-      if (index < words.length - 1) {
-        // Randomly choose between 3 and 4 spaces
-        const numSpaces = Math.floor(Math.random() * 2) + 3; // 3 or 4 spaces
-        return `${word}${' '.repeat(numSpaces)}`;
-      }
-      return word;
-    }).join('');
+    // Split the paragraph by periods or commas
+    const clauses = sentence.split(/([.,])/);
+    console.log("cluause:",clauses);
     
+    const spacedSentence = clauses.map((clause, index) => {
+      if (clause === '.' || clause === ',') {
+        // Add 3 or 4 spaces after periods or commas
+        const numSpaces = Math.floor(Math.random() * 2) + 3; // 3 or 4 spaces
+        return `${clause}${' '.repeat(numSpaces)}`;
+      }
+      return clause;
+    }).join('');
+
     setModifiedSentence(spacedSentence);
   };
 
@@ -31,7 +35,7 @@ const Text: React.FC<HomeProps> = () => {
       <Textarea
         value={sentence}
         onChange={handleChange}
-        placeholder="Enter your sentence here..."
+        placeholder="Enter your paragraph here..."
         className="border border-gray-700 p-4 mt-2 bg-gray-800 text-white rounded-lg shadow-md text-xl"
         rows={30} // Adjust the number of rows as needed
         cols={40} // Adjust the number of columns as needed
@@ -43,7 +47,7 @@ const Text: React.FC<HomeProps> = () => {
         Insert Whitespaces
       </button>
       {modifiedSentence && (
-        <div className="mt-6 bg-gray-800 text-white p-4 rounded-lg shadow-md">
+        <div className="mt-6 bg-gray-800 text-white p-4 m-4 rounded-lg shadow-md">
           <p className="text-xl">
             Modified Sentence: <span className="font-mono">{modifiedSentence}</span>
           </p>
