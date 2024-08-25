@@ -1,32 +1,50 @@
 import React, { useState } from 'react';
 import { Textarea } from "@/components/ui/textarea";
-import cluster from 'cluster';
 
 interface HomeProps {}
 
 const Text: React.FC<HomeProps> = () => {
   const [sentence, setSentence] = useState('');
-  const [modifiedSentence, setModifiedSentence] = useState('');
+  const [modifiedParagraphs, setModifiedParagraphs] = useState<string[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setSentence(e.target.value);
   };
 
   const insertWhitespace = () => {
-    // Split the paragraph by periods or commas
-    const clauses = sentence.split(/([.,])/);
-    console.log("cluause:",clauses);
-    
-    const spacedSentence = clauses.map((clause, index) => {
-      if (clause === '.' || clause === ',') {
-        // Add 3 or 4 spaces after periods or commas
-        const numSpaces = Math.floor(Math.random() * 2) + 3; // 3 or 4 spaces
-        return `${clause}${' '.repeat(numSpaces)}`;
-      }
-      return clause;
-    }).join('');
+    // Split the input text by newline characters
+    const paragraphs = sentence.split('\n');
 
-    setModifiedSentence(spacedSentence);
+    const modifiedParagraphs = paragraphs.map((paragraph) => {
+      // Split the paragraph by periods or commas
+      const clauses = paragraph.split(/([.,])/);
+
+      const wordspace = clauses.map((clause, index) => {
+        if (clause !== '.' && clause !== ',') {
+          let words = clause.split(' ').filter(word => word); // Split clause into words
+          console.log("words:",words);
+
+          for (let i = 0; i < 3; i++) {
+            let randomIndex = Math.floor(Math.random() * words.length);
+            let word = words[randomIndex];
+            if (word && word.length > 2) { // Add a check for word being truthy and having a length > 2
+              // Randomly place one whitespace in the word
+              let randomPosition = Math.floor(Math.random() * (word.length - 1)) + 1;
+              words[randomIndex] = word.substring(0, randomPosition) + ' ' + word.substring(randomPosition);
+            }
+          }
+
+          // Join the words back into a clause
+          return words.join(' ') + (index % 2 !== 0 ? clauses[index] : '');
+        }
+
+        return clause;
+      }).join('');
+
+      return wordspace;
+    });
+
+    setModifiedParagraphs(modifiedParagraphs);
   };
 
   return (
@@ -35,7 +53,7 @@ const Text: React.FC<HomeProps> = () => {
       <Textarea
         value={sentence}
         onChange={handleChange}
-        placeholder="Enter your paragraph here..."
+        placeholder="Enter your paragraphs here..."
         className="border border-gray-700 p-4 mt-2 bg-gray-800 text-white rounded-lg shadow-md text-xl"
         rows={30} // Adjust the number of rows as needed
         cols={40} // Adjust the number of columns as needed
@@ -46,11 +64,14 @@ const Text: React.FC<HomeProps> = () => {
       >
         Insert Whitespaces
       </button>
-      {modifiedSentence && (
+      {modifiedParagraphs.length > 0 && (
         <div className="mt-6 bg-gray-800 text-white p-4 m-4 rounded-lg shadow-md">
-          <p className="text-xl">
-            Modified Sentence: <span className="font-mono">{modifiedSentence}</span>
-          </p>
+          <h2 className="text-2xl font-bold mb-4">Modified Paragraphs:</h2>
+          {modifiedParagraphs.map((paragraph, index) => (
+            <p key={index} className="text-xl mb-4">
+              <span className="font-mono">{paragraph}</span>
+            </p>
+          ))}
         </div>
       )}
     </div>
