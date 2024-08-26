@@ -26,10 +26,9 @@ const Text: React.FC<HomeProps> = () => {
           for (let i = 0; i < 3; i++) {
             let randomIndex = Math.floor(Math.random() * words.length);
             let word = words[randomIndex];
-            if (word && word.length > 2) { // Add a check for word being truthy and having a length > 2
-              // Randomly place one zero-width space in the word
+            if (word && word.length > 2) {
               let randomPosition = Math.floor(Math.random() * (word.length - 1)) + 1;
-              words[randomIndex] = word.substring(0, randomPosition) + '\u200B' + word.substring(randomPosition);
+              words[randomIndex] = word.substring(0, randomPosition) + '\u200E' + word.substring(randomPosition);
             }
           }
 
