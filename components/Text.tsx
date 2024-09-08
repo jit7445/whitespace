@@ -48,7 +48,14 @@ const Text: React.FC<HomeProps> = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-8 bg-gray-900">
       <header className='flex justify-center items-center bg-gray-400 rounded-xl'>
-      
+       <div className='flex justify-center items-center  p-2'>
+      <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            </div>
       
       </header>
       <h1 className="text-4xl font-bold text-yellow-400 mb-6">Whitespace Inserter</h1>
