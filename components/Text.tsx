@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Textarea } from "@/components/ui/textarea";
-
+import {  SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 interface HomeProps {}
 
 const Text: React.FC<HomeProps> = () => {
@@ -27,8 +27,8 @@ const Text: React.FC<HomeProps> = () => {
             let randomIndex = Math.floor(Math.random() * words.length);
             let word = words[randomIndex];
             if (word && word.length > 2) {
-              let randomPosition = Math.floor(Math.random() * (word.length - 1)) + 1;
-              words[randomIndex] = word.substring(0, randomPosition) + '\u200E' + word.substring(randomPosition);
+              let randomPosition = 1;
+              words[randomIndex] = word.substring(0,1) + '\u200B' + word.substring(1);
             }
           }
 
@@ -47,6 +47,16 @@ const Text: React.FC<HomeProps> = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-8 bg-gray-900">
+      <header className='flex justify-center items-center bg-gray-400 rounded-xl'>
+        <div className='flex justify-center items-center  p-2'>
+      <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            </div>
+      </header>
       <h1 className="text-4xl font-bold text-yellow-400 mb-6">Whitespace Inserter</h1>
       <Textarea
         value={sentence}
