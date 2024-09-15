@@ -40,18 +40,19 @@ const Text: React.FC<HomeProps> = () => {
     setModifiedParagraphs(modifiedParagraphs);
   };
   
+  
   const insertInvisibleSpaces = (text: string) => {
-   
-    const clauses = text.split(/([.,])/);
-    
+    const clauses = text.split(/([.,])/); // Split text by punctuation while keeping punctuation
+  
     return clauses.map((clause, index) => {
-      if (/\s{2,}/.test(clause)) {
-       
+      // Skip punctuation and spaces, only process actual words
+      if (/\s{2,}/.test(clause) || clause === '.' || clause === ',') {
         return clause;
       }
   
       let words = clause.split(' ').filter(word => word); // Split clause into words
-      
+  
+      // Insert zero-width spaces into three random words
       for (let i = 0; i < 3; i++) {
         let randomIndex = Math.floor(Math.random() * words.length);
         let word = words[randomIndex];
@@ -61,9 +62,8 @@ const Text: React.FC<HomeProps> = () => {
           words[randomIndex] = word.substring(0, randomPosition) + '\u200B' + word.substring(randomPosition);
         }
       }
-      
   
-      return words.join(' ') + (index % 2 !== 0 ? clauses[index] : '');
+      return words.join(' ') + (index % 2 !== 0 ? clauses[index] : ''); // Add punctuation correctly
     }).join('');
   };
   
