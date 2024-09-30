@@ -53,7 +53,7 @@ const Text: React.FC<HomeProps> = () => {
       let words = clause.split(' ').filter(word => word); // Split clause into words
   
       // Insert zero-width spaces into three random words
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 5; i++) {
         let randomIndex = Math.floor(Math.random() * words.length);
         let word = words[randomIndex];
         if (word && word.length > 2) { // Check if word is valid and has length > 2
@@ -62,18 +62,16 @@ const Text: React.FC<HomeProps> = () => {
           words[randomIndex] = word.substring(0, randomPosition) + '\u200B' + word.substring(randomPosition);
         }
       }
-        for (let i = 0; i < 3; i++) {
-        let randomIndex = Math.floor(Math.random() * words.length);
-        let word = words[randomIndex];
+	  words.forEach((word, index) => {
         if (word && word.length > 2) { // Check if word is valid and has length > 2
           // Randomly place one zero-width space in the word
-          let randomPosition=1;
-          words[randomIndex] = word.substring(0, randomPosition) + '\u200B' + word.substring(randomPosition);
+          let randomPosition=2;
+          words[index] = word.substring(0, randomPosition) + '\u200B' + word.substring(randomPosition);
         }
-      }
+	  })
   
       return words.join(' ') + (index % 2 !== 0 ? clauses[index] : ''); // Add punctuation correctly
-    }).join('');
+    }).join(' ');
   };
   
   
