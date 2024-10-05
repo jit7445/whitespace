@@ -17,7 +17,7 @@ const Text: React.FC<HomeProps> = () => {
     
     const modifiedParagraphs = paragraphs.map((paragraph) => {
       
-      const boldTextRegex = /\*\*(.*?)\*\*/g;
+      const boldTextRegex = /\s\*\*([^\*]+)\*\*\s/g;
       let lastIndex = 0;
       let result = '';
   
