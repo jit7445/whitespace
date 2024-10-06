@@ -17,7 +17,7 @@ const Text: React.FC<HomeProps> = () => {
     
     const modifiedParagraphs = paragraphs.map((paragraph) => {
       
-      const boldTextRegex = /\s\*\*([^\*]+)\*\*\s/g;
+      const boldTextRegex = /\s*\*\*([^\*]+)\*\*\s*/g;
       let lastIndex = 0;
       let result = '';
   
@@ -43,6 +43,7 @@ const Text: React.FC<HomeProps> = () => {
   
   const insertInvisibleSpaces = (text: string) => {
     const clauses = text.split(/([.,])/); // Split text by punctuation while keeping punctuation
+	const re = new RegExp(/\s+([,.])/g);
   
     return clauses.map((clause, index) => {
       // Skip punctuation and spaces, only process actual words
@@ -71,7 +72,7 @@ const Text: React.FC<HomeProps> = () => {
 	  })
   
       return words.join(' ') + (index % 2 !== 0 ? clauses[index] : ''); // Add punctuation correctly
-    }).join(' ');
+    }).join(' ').replace(re, '$1');
   };
   
   
