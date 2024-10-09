@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Textarea } from "@/components/ui/textarea";
-
+import CopyToClipboardButton from './CopyToClipboardButton';
 interface HomeProps {}
 
 const Text: React.FC<HomeProps> = () => {
@@ -87,14 +87,19 @@ const Text: React.FC<HomeProps> = () => {
         rows={30}
         cols={40} // Adjust the number of columns as needed
       />
+      <div className='flex flex-row justify-between items-center gap-2'>
       <button
         onClick={insertWhitespace}
         className="bg-blue-600 text-white px-6 py-2 rounded-lg mt-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         Insert Whitespaces
       </button>
+      <div className='text-white'> <CopyToClipboardButton text={modifiedParagraphs} /></div>
+      </div>
+     
       {modifiedParagraphs.length > 0 && (
         <div className="mt-6 bg-gray-800 text-white p-4 m-4 rounded-lg shadow-md">
+        
           <h2 className="text-2xl font-bold mb-4">Modified Paragraphs:</h2>
           {modifiedParagraphs.map((paragraph, index) => (
             <p key={index} className="text-xl mb-4">
